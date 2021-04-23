@@ -1,7 +1,7 @@
 import "./header.styles.scss";
 import { Link } from "react-router-dom";
 import { ReactComponent as Logo } from "../../assets/crown.svg";
-import { auth } from "../../firebase/firebase.utils";
+import FirebaseService from "../../services/firebase.services";
 
 const Header = ({ currentUser }) => (
   <div className="header">
@@ -18,7 +18,7 @@ const Header = ({ currentUser }) => (
         CONTACT
       </Link>
       {currentUser ? (
-        <div className="option" onClick={() => auth.signOut()}>
+        <div className="option" onClick={() => FirebaseService.auth.signOut()}>
           SIGN OUT
         </div>
       ) : (

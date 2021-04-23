@@ -4,7 +4,7 @@ import "./App.css";
 import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import AuthPage from "./pages/auth/auth.component";
-import { auth } from "./firebase/firebase.utils";
+import FirebaseServices from "./services/firebase.services";
 import React from "react";
 
 class App extends React.Component {
@@ -15,14 +15,28 @@ class App extends React.Component {
     };
   }
 
-  firebaseAuth = null
+  firebaseAuth = null;
 
   componentDidMount() {
-    this.firebaseAuth = auth.onAuthStateChanged((user) => {
-      this.setState({
-        currentUser: user,
-      });
-    });
+    this.firebaseAuth = FirebaseServices.auth.onAuthStateChanged(
+      async (user) => {
+        const userRef = await FirebaseServices.createUserProfileDocument(user);
+        if (userRef) {
+          userRef.onSnapshot((snapshot) => {
+            this.setState({
+              currentUser: {
+                id: userRef.id,
+                ...snapshot.data(),
+              },
+            });
+          });
+        } else {
+          this.setState({
+            currentUser: user,
+          });
+        }
+      }
+    );
   }
 
   componentWillUnmount() {
@@ -32,7 +46,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Header currentUser={this.state.currentUser}/>
+        <Header currentUser={this.state.currentUser} />
         <Switch>
           <Route exact path="/" component={Homepage} />
           <Route exact path="/shop" component={ShopPage} />
