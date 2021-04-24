@@ -5,7 +5,6 @@ import SHOP_DATA from "./shop.data.js";
 class ShopPage extends Component {
   constructor(props) {
     super();
-    console.log(SHOP_DATA);
     this.state = {
       collections: SHOP_DATA,
     };
