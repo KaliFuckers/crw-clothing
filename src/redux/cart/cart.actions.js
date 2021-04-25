@@ -9,4 +9,17 @@ export const addItem = item => ({
   payload: item
 });
 
-export default toogleShowCart;
+export const deleteItem = id => ({
+  type: cartActionType.DELETE_ITEM,
+  payload: id
+});
+
+export const increaseQuantity = id => ({
+  type: cartActionType.INCREASE_QUANTITY,
+  payload: id
+});
+
+export const decreaseQuantity = id => ({
+  type: cartActionType.DECREASE_QUANTITY,
+  payload: id
+});
