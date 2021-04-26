@@ -9,6 +9,8 @@ import FirebaseServices from "./services/firebase.services";
 import React from "react";
 import { connect } from "react-redux";
 import { setCurrentUser } from "./redux/user/user.actions";
+import { createStructuredSelector } from "reselect";
+import { selectCurrentUser } from "./redux/user/user.selector";
 
 class App extends React.Component {
   firebaseAuth = null;
@@ -39,9 +41,16 @@ class App extends React.Component {
         <Header />
         <Switch>
           <Route exact path="/" component={Homepage} />
-          <Route exact path="/shop" component={ShopPage} />
-          <Route exact path="/auth" render={() => this.props.currentUser ? (<Redirect to="/"/>) : (<AuthPage />)} />
-          <Route exact path="/checkout" component={CheckoutPage}/>
+          {/* If you have nested Route, you can't have exact */}
+          <Route path="/shop" component={ShopPage} />
+          <Route
+            exact
+            path="/auth"
+            render={() =>
+              this.props.currentUser ? <Redirect to="/" /> : <AuthPage />
+            }
+          />
+          <Route exact path="/checkout" component={CheckoutPage} />
         </Switch>
       </div>
     );
@@ -52,10 +61,14 @@ const mapDispatchToProps = (dispatch) => ({
   setCurrentUser: (user) => dispatch(setCurrentUser(user)),
 });
 
-const mapStateToProps = ({user}) => {
-  return {
-    currentUser: user.currentUser
-  }
-}
+// const mapStateToProps = ({ user }) => {
+//   return {
+//     currentUser: user.currentUser,
+//   };
+// };
+
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

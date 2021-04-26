@@ -7,17 +7,19 @@ const CollectionPreview = ({ title, items }) => {
     <div className="collection-preview">
       <h2 className="title">{title.toUpperCase()}</h2>
       <div className="preview">
-        {items.filter((item, index) => index < 4).map(({id, name, price, imageUrl}) => {
-          return (
-            <CollectionItem
-              key={id}
-              name={name}
-              price={price}
-              id={id}
-              imageUrl={imageUrl}
-            />
-          );
-        })}
+        {items
+          .filter((item, index) => index < 4)
+          .map(({ id, name, price, imageUrl }) => {
+            return (
+              <CollectionItem
+                key={id}
+                name={name}
+                price={price}
+                id={id}
+                imageUrl={imageUrl}
+              />
+            );
+          })}
       </div>
     </div>
   );
