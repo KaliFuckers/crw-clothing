@@ -43,8 +43,13 @@ class SignIn extends Component {
             label="password"
           />
           <div className="buttons">
-            <CustomButton type="submit">Sign In</CustomButton>
-            <CustomButton onClick={FirebaseService.signInWithGoogle} isGoogleSignIn={true}>
+            <CustomButton otherProps={{ type: "submit" }}>Sign In</CustomButton>
+            <CustomButton
+              otherProps={{
+                onClick: FirebaseService.signInWithGoogle,
+                isGoogleSignIn: true,
+              }}
+            >
               Sign In with Google
             </CustomButton>
           </div>

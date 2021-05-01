@@ -16,9 +16,11 @@ const CartDropdown = ({ items, history, dispatch }) => (
       )}
     </div>
     <CustomButton
-      onClick={() => {
-        history.push("/checkout");
-        dispatch(toogleShowCart());
+      otherProps={{
+        onClick: () => {
+          history.push("/checkout");
+          dispatch(toogleShowCart());
+        },
       }}
     >
       GO TO CHECKOUT

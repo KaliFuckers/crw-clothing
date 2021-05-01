@@ -1,5 +1,10 @@
-import "./header.styles.scss";
-import { Link } from "react-router-dom";
+// import "./header.styles.scss";
+import {
+  OptionsContainer,
+  HeaderContainer,
+  LogoContainer,
+  OptionLink,
+} from "./header.styles";
 import { ReactComponent as Logo } from "../../assets/crown.svg";
 import FirebaseService from "../../services/firebase.services";
 import { connect } from "react-redux";
@@ -10,32 +15,25 @@ import { selectCurrentUser } from "../../redux/user/user.selector";
 import { createStructuredSelector } from "reselect";
 
 const Header = ({ currentUser, hidden }) => (
-  <div className="header">
-    <div className="logo-container">
-      <Link to="/">
-        <Logo className="logo" />
-      </Link>
-    </div>
-    <div className="options">
-      <Link to="/shop" className="option">
-        SHOP
-      </Link>
-      <Link to="/shop" className="option">
-        CONTACT
-      </Link>
+  <HeaderContainer>
+    <LogoContainer to="/">
+      <Logo className="logo" />
+    </LogoContainer>
+    <OptionsContainer>
+      <OptionLink to="/shop">SHOP</OptionLink>
+      <OptionLink to="/shop">CONTACT</OptionLink>
       {currentUser ? (
-        <div className="option" onClick={() => FirebaseService.auth.signOut()}>
+        // Quiero usar un div pero con los estilos de OptionLink
+        <OptionLink as="div" onClick={() => FirebaseService.auth.signOut()}>
           SIGN OUT
-        </div>
+        </OptionLink>
       ) : (
-        <Link to="/auth" className="option">
-          SIGN IN
-        </Link>
+        <OptionLink to="/auth">SIGN IN</OptionLink>
       )}
       <CartIcon />
-    </div>
+    </OptionsContainer>
     {!hidden ? <CartDropdown /> : null}
-  </div>
+  </HeaderContainer>
 );
 
 //This can be applied to
@@ -48,7 +46,7 @@ const Header = ({ currentUser, hidden }) => (
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
-  hidden: selectorHideCartComponent
+  hidden: selectorHideCartComponent,
 });
 
 export default connect(mapStateToProps)(Header);

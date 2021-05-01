@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import { setCurrentUser } from "./redux/user/user.actions";
 import { createStructuredSelector } from "reselect";
 import { selectCurrentUser } from "./redux/user/user.selector";
+// import { selectorCollections } from "./redux/shop/shop.selectors";
 
 class App extends React.Component {
   firebaseAuth = null;
@@ -29,10 +30,15 @@ class App extends React.Component {
         }
       }
     );
+    //This code were used to upload the collections, reasons why we delete the collection array from props
+    // FirebaseServices.addCollectionAndDocuments(
+    //   "collections",
+    //   collections.map(({ title, items }) => ({ title, items }))
+    // );
   }
 
   componentWillUnmount() {
-    this.firebaseAuth.unsubscribeFromAuth();
+    this.firebaseAuth?.unsubscribeFromAuth();
   }
 
   render() {
@@ -69,6 +75,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
+  // collections: selectorCollections,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

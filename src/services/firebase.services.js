@@ -48,6 +48,36 @@ class FirebaseServices {
     return userRef;
   };
 
+  addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+    //First we have to create the collection and send the data
+    //Request in 2 steps
+    //But batch can be used to create a request group
+
+    const collectionRef = this.#firestore.collection(collectionKey);
+    const batch = this.#firestore.batch();
+    objectsToAdd.forEach((obj) => {
+      //Create a free documents in this collection with a random firebase id
+      const newDocRef = collectionRef.doc();
+      batch.set(newDocRef, obj);
+    });
+
+    return await batch.commit();
+  };
+
+  convertCollectionsSnapshotToMap = (snapshot) => {
+    const transformedCollection = snapshot.docs.map((doc) => {
+      const { title, items } = doc.data();
+      return {
+        title,
+        items,
+        routeName: encodeURI(title.toLowerCase()),
+        id: doc.id,
+      };
+    });
+
+    return transformedCollection;
+  };
+
   get auth() {
     return this.#auth;
   }
