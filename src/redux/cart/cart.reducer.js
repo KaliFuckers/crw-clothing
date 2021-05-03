@@ -37,19 +37,18 @@ const cartReducer = (state = INITIAL_STATE, action) => {
         }),
       };
     case cartActionType.DECREASE_QUANTITY:
-      console.log(
-        "TEST",
-        decreaseQuantity({
-          items: state.items,
-          payload: action.payload,
-        })
-      );
       return {
         ...state,
         items: decreaseQuantity({
           items: state.items,
           payload: action.payload,
         }),
+      };
+    case cartActionType.CLEAR_CART:
+      return {
+        ...state,
+        items: [],
+        hidden: true,
       };
     default:
       return state;

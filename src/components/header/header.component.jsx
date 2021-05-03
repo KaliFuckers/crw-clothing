@@ -6,15 +6,15 @@ import {
   OptionLink,
 } from "./header.styles";
 import { ReactComponent as Logo } from "../../assets/crown.svg";
-import FirebaseService from "../../services/firebase.services";
 import { connect } from "react-redux";
 import CartIcon from "../cart-icon/cart-icon.component";
 import CartDropdown from "../cart-dropdown/cart-dropdown.component";
 import { selectorHideCartComponent } from "../../redux/cart/cart.selector";
 import { selectCurrentUser } from "../../redux/user/user.selector";
 import { createStructuredSelector } from "reselect";
+import { signOut } from "../../redux/user/user.actions";
 
-const Header = ({ currentUser, hidden }) => (
+const Header = ({ currentUser, hidden, signOut }) => (
   <HeaderContainer>
     <LogoContainer to="/">
       <Logo className="logo" />
@@ -24,7 +24,7 @@ const Header = ({ currentUser, hidden }) => (
       <OptionLink to="/shop">CONTACT</OptionLink>
       {currentUser ? (
         // Quiero usar un div pero con los estilos de OptionLink
-        <OptionLink as="div" onClick={() => FirebaseService.auth.signOut()}>
+        <OptionLink as="div" onClick={signOut}>
           SIGN OUT
         </OptionLink>
       ) : (
@@ -49,4 +49,8 @@ const mapStateToProps = createStructuredSelector({
   hidden: selectorHideCartComponent,
 });
 
-export default connect(mapStateToProps)(Header);
+const mapDispatchToProps = (dispatch) => ({
+  signOut: () => dispatch(signOut()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

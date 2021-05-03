@@ -1,7 +1,7 @@
 import CustomButton from "../custom-button/custom-button.component";
 import FormInput from "../form-input/form-input.component";
-import FirebaseService from "../../services/firebase.services";
-
+import { connect } from "react-redux";
+import { emailSignUpStart } from "../../redux/user/user.actions";
 import React, { Component } from "react";
 
 class SignUp extends Component {
@@ -36,15 +36,20 @@ class SignUp extends Component {
     }
 
     try {
-      const {
-        user,
-      } = await FirebaseService.auth.createUserWithEmailAndPassword(
-        email,
-        password
+      // const {
+      //   user,
+      // } = await FirebaseService.auth.createUserWithEmailAndPassword(
+      //   email,
+      //   password
+      // );
+      // await FirebaseService.createUserProfileDocument(user, {
+      //   displayName,
+      // });
+      await this.props.emailSignUp(
+        this.state.email,
+        this.state.password,
+        this.state.displayName
       );
-      await FirebaseService.createUserProfileDocument(user, {
-        displayName,
-      });
 
       this.setState({
         displayName: "",
@@ -108,4 +113,9 @@ class SignUp extends Component {
   }
 }
 
-export default SignUp;
+const mapDispatchToProps = (dispatch) => ({
+  emailSignUp: (email, password, displayName) =>
+    dispatch(emailSignUpStart({ email, password, displayName })),
+});
+
+export default connect(null, mapDispatchToProps)(SignUp);

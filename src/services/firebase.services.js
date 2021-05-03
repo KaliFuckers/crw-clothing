@@ -12,13 +12,13 @@ class FirebaseServices {
     appId: "1:354240056492:web:496f80a81931949efda309",
     measurementId: "G-WW751GJ27C",
   };
-  #provider = new firebase.auth.GoogleAuthProvider();
+  googleProvider = new firebase.auth.GoogleAuthProvider();
   #auth;
   #firestore;
 
   constructor() {
     firebase.initializeApp(this.#config);
-    this.#provider.setCustomParameters({ prompt: "select_account" });
+    this.googleProvider.setCustomParameters({ prompt: "select_account" });
     this.#auth = firebase.auth();
     this.#firestore = firebase.firestore();
   }
@@ -46,6 +46,14 @@ class FirebaseServices {
     }
 
     return userRef;
+  };
+
+  getCurrentUser = () => {
+    return new Promise((resolve, reject) => {
+      this.auth.onAuthStateChanged(async (user) => {
+        resolve(user);
+      }, reject);
+    });
   };
 
   addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
@@ -86,7 +94,7 @@ class FirebaseServices {
     return this.#firestore;
   }
 
-  signInWithGoogle = () => this.#auth.signInWithPopup(this.#provider);
+  signInWithGoogle = () => this.#auth.signInWithPopup(this.googleProvider);
 }
 
 export default new FirebaseServices();
